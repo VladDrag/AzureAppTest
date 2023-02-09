@@ -1,0 +1,70 @@
+@* @page *@
+@model List<Person>
+@using(Html.BeginForm("PostPerson", "Person")) {}
+
+@* @{
+    ViewData["Title"] = "Home Page";
+} *@
+
+
+
+<body>
+	<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+	<text>Existing registry:</text>
+    <p>@foreach(var person in Model)
+		{
+			<text>@person.Name</text>
+			<text>@person.Email</text>
+		}
+	</p>
+	<p>Please write your email below:</p>
+	<text>email:</text>
+	<input type="text" id="email" name="email" />
+	<text>name:</text>
+	<input type="text" id="name" name="name" />
+</div>
+	@* using (Html.BeginForm("Index", "Home", FormMethod.Post)) {
+		<input type="submit" value="OK" />
+	} *@
+
+
+	<form method="post" enctype="multipart/form-data" asp-controller="Person" asp-action="PostPerson">
+		<table>
+			<tr>
+				<td>
+					Name:
+				</td>
+				<td>
+					<input type="text" id="textname" name="name"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Email:
+				</td>
+				<td>
+					<input type="text" id="textemail" name="email"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="Submit"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+	  @* @{
+			if (isPost) {
+				string contactname = Request.Form["contactname"];
+				string contactemail = Request.Form["contactemail"];
+
+				<text>
+					You entered: <br />
+					Contact Name: @contactname <br />
+					Employee Count: @contactemail <br />
+				</text>
+			}
+		}  *@
+    </body>
