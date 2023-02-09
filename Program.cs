@@ -5,9 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 var conStrBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
 conStrBuilder.Password = builder.Configuration["DbPassword"];
 var connection = conStrBuilder.ConnectionString;
-// Add services to the container.
-
-// builder.Services.Configure<PersonController>(options => options._connectionString = connection);
 
 builder.Services.AddOptions();
 builder.Services.Configure<MyOptions>(options => options.ConnectionString = connection);
@@ -43,5 +40,4 @@ app.Run();
 public class MyOptions
 {
 	public string? ConnectionString { get; set; }
-
 }

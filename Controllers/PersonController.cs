@@ -19,11 +19,6 @@ public class PersonController : Controller
 	{
 		_logger = logger;
 
-		//get the connection string from appsettings.json
-
-		// var configuration = new ConfigurationBuilder()
-		// 	.AddJsonFile("appsettings.json")
-		// 	.Build();
 		try
 		{
 			_connectionString = options.Value.ConnectionString;
@@ -35,7 +30,6 @@ public class PersonController : Controller
 				_logger.LogError("Connection string is null");
 			}
 		}
-		// _connectionString = configuration.GetConnectionString("DefaultConnection");
 	}
 
 	public IActionResult Index()
