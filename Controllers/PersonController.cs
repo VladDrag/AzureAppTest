@@ -8,30 +8,36 @@ using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using Dapper;
 using Dapper.Contrib;
+using Microsoft.Extensions.Options;
 
 public class PersonController : Controller
 {
 	private readonly ILogger<PersonController> _logger;
-	private readonly string _connectionString;
+	private readonly string? _connectionString;
 
-	public PersonController(ILogger<PersonController> logger)
+	public PersonController(ILogger<PersonController> logger, IOptions<MyOptions> options)
 	{
 		_logger = logger;
 
-		var configuration = new ConfigurationBuilder()
-			.AddJsonFile("appsettings.json")
-			.Build();
-		_connectionString = configuration.GetConnectionString("DefaultConnection");
+		//get the connection string from appsettings.json
+
+		// var configuration = new ConfigurationBuilder()
+		// 	.AddJsonFile("appsettings.json")
+		// 	.Build();
+		try
+		{
+			_connectionString = options.Value.ConnectionString;
+		}
+		catch
+		{
+			if (options.Value.ConnectionString == null)
+			{
+				_logger.LogError("Connection string is null");
+			}
+		}
+		// _connectionString = configuration.GetConnectionString("DefaultConnection");
 	}
 
-	// private async Task<List<Person>> GetPeople()
-	// {
-
-
-	// 	return Task<people>;
-	// }
-
-	//GET: People
 	public IActionResult Index()
 	{	
 		using var connection = new SqlConnection(_connectionString);
@@ -46,7 +52,6 @@ public class PersonController : Controller
 		}
 
 		return View(people);
-		// return View();
 	}
 
 	public IActionResult Privacy()
@@ -64,17 +69,10 @@ public class PersonController : Controller
 	public void PostPerson(string name, string email)
 	{
 		using var connection = new SqlConnection(_connectionString);
-		// var lastId = connection.Query<int>("SELECT MAX(Id) FROM EmailTable").AsList()[0] + 1;
-		// var person = new Person { Id = lastId, Name = name, Email = email };
+
 		var person = new Person { Name = name, Email = email };
-		//I have issues with the Id here. Dapper does not automatically assign the Id, and the [Key] attribute did not work for some reason
-		// connection.Execute("INSERT INTO EmailTable (Id, Name, Email) VALUES (@Id, @Name, @Email)", person);
+
 		connection.Execute("INSERT INTO EmailTable (Name, Email) VALUES (@Name, @Email)", person);
 	}
 
-	// [HttpGet]
-	// public IActionResult GetPeople()
-	// {
-
-	// }
 }

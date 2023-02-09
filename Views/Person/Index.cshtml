@@ -1,32 +1,16 @@
-@* @page *@
-@model List<Person>
+@model List<Person> //use this for counting the database number of items
+
 @using(Html.BeginForm("PostPerson", "Person")) {}
-
-@* @{
-    ViewData["Title"] = "Home Page";
-} *@
-
-
+@{
+	ViewData["Title"] = "Person Registry Page";
+}
 
 <body>
 	<div class="text-center">
     <h1 class="display-4">Welcome</h1>
 	<text>Existing registry:</text>
-    <p>@foreach(var person in Model)
-		{
-			<text>@person.Name</text>
-			<text>@person.Email</text>
-		}
-	</p>
-	<p>Please write your email below:</p>
-	<text>email:</text>
-	<input type="text" id="email" name="email" />
-	<text>name:</text>
-	<input type="text" id="name" name="name" />
+    <p>There are @Model.Count</p>
 </div>
-	@* using (Html.BeginForm("Index", "Home", FormMethod.Post)) {
-		<input type="submit" value="OK" />
-	} *@
 
 
 	<form method="post" enctype="multipart/form-data" asp-controller="Person" asp-action="PostPerson">
@@ -54,17 +38,4 @@
 			</tr>
 		</table>
 	</form>
-
-	  @* @{
-			if (isPost) {
-				string contactname = Request.Form["contactname"];
-				string contactemail = Request.Form["contactemail"];
-
-				<text>
-					You entered: <br />
-					Contact Name: @contactname <br />
-					Employee Count: @contactemail <br />
-				</text>
-			}
-		}  *@
-    </body>
+	</body>
